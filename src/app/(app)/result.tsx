@@ -1,24 +1,37 @@
-import { Link } from 'expo-router';
+import { useLocalSearchParams, useRouter } from 'expo-router';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { Colors, FontSize, Radius, Spacing } from '@/theme';
 
 export default function ResultScreen() {
+  const router = useRouter();
+  const { summary, nextStep } = useLocalSearchParams<{ summary?: string; nextStep?: string }>();
+
   return (
     <SafeAreaView style={styles.safeArea}>
       <View style={styles.container}>
-        <Text style={styles.title}>Result</Text>
-        <Text style={styles.subtitle}>The plain-language summary will go here.</Text>
+        <Text style={styles.title}>Here&apos;s what I heard</Text>
+        <Text style={styles.body}>
+          {summary ?? "Thanks for sharing - I wasn't able to put together a summary this time."}
+        </Text>
 
-        <Link href="/home" asChild>
-          <Pressable
-            style={styles.button}
-            accessibilityRole="button"
-            accessibilityLabel="Back to home">
-            <Text style={styles.buttonText}>Back to home</Text>
-          </Pressable>
-        </Link>
+        <Text style={styles.label}>Suggested next step</Text>
+        <Text style={styles.body}>
+          {nextStep ?? 'Talk to a trusted adult, teacher, parent, or school counselor.'}
+        </Text>
+
+        <Text style={styles.note}>
+          This is just a supportive check-in, not a diagnosis or a legal judgment.
+        </Text>
+
+        <Pressable
+          onPress={() => router.replace('/chat')}
+          style={styles.button}
+          accessibilityRole="button"
+          accessibilityLabel="Start over">
+          <Text style={styles.buttonText}>Start over</Text>
+        </Pressable>
       </View>
     </SafeAreaView>
   );
@@ -31,25 +44,38 @@ const styles = StyleSheet.create({
   },
   container: {
     flex: 1,
-    alignItems: 'center',
     justifyContent: 'center',
     paddingHorizontal: Spacing.lg,
-    gap: Spacing.md,
   },
   title: {
     fontSize: FontSize.xl,
     fontWeight: '700',
     color: Colors.text,
+    marginBottom: Spacing.sm,
   },
-  subtitle: {
-    fontSize: FontSize.md,
+  label: {
+    fontSize: FontSize.sm,
+    fontWeight: '700',
     color: Colors.textMuted,
-    textAlign: 'center',
-    marginBottom: Spacing.lg,
+    textTransform: 'uppercase',
+    marginTop: Spacing.md,
+  },
+  body: {
+    fontSize: FontSize.md,
+    color: Colors.text,
+    lineHeight: 22,
+  },
+  note: {
+    fontSize: FontSize.sm,
+    color: Colors.textMuted,
+    marginTop: Spacing.lg,
+    fontStyle: 'italic',
   },
   button: {
     minHeight: 44,
     minWidth: 44,
+    marginTop: Spacing.xl,
+    alignSelf: 'center',
     paddingHorizontal: Spacing.lg,
     paddingVertical: Spacing.sm,
     borderRadius: Radius.pill,

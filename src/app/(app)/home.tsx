@@ -8,6 +8,14 @@ import { Colors, FontSize, Radius, Spacing } from '@/theme';
 export default function HomeScreen() {
   const { signOut } = useAuth();
 
+  async function handleSignOut() {
+    try {
+      await signOut();
+    } catch {
+      // Sign-out is best-effort; the user stays on this screen if it fails.
+    }
+  }
+
   return (
     <SafeAreaView style={styles.safeArea}>
       <View style={styles.container}>
@@ -23,7 +31,7 @@ export default function HomeScreen() {
         </Link>
 
         <Pressable
-          onPress={() => signOut()}
+          onPress={handleSignOut}
           style={styles.signOutButton}
           accessibilityRole="button"
           accessibilityLabel="Sign out">

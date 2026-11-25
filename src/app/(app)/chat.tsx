@@ -12,6 +12,7 @@ import { containsSafetyKeyword, SAFETY_RESPONSE } from '@/components/chat/safety
 import { parseSelfCheckResult } from '@/components/chat/selfCheckResult';
 import { TypingIndicator } from '@/components/chat/TypingIndicator';
 import type { ChatMessage } from '@/components/chat/types';
+import { apiUrl } from '@/lib/api';
 import { Colors, Spacing } from '@/theme';
 
 const INITIAL_MESSAGES: ChatMessage[] = [
@@ -55,7 +56,7 @@ export default function ChatScreen() {
 
     try {
       const token = await getToken();
-      const response = await fetch('/api/chat', {
+      const response = await fetch(apiUrl('/api/chat'), {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

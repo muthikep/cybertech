@@ -2,6 +2,7 @@ import { useAuth } from '@clerk/expo';
 import { Redirect, Stack } from 'expo-router';
 import { useEffect, useRef } from 'react';
 
+import { apiUrl } from '@/lib/api';
 import { Colors } from '@/theme';
 
 export default function AppLayout() {
@@ -17,7 +18,7 @@ export default function AppLayout() {
     (async () => {
       try {
         const token = await getToken();
-        await fetch('/api/users/sync', {
+        await fetch(apiUrl('/api/users/sync'), {
           method: 'POST',
           headers: { Authorization: `Bearer ${token}` },
         });
